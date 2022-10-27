@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div id="content" className="mt-24 flex-1">
+      <div id="content" className=" mt-24 flex flex-1 justify-center">
         <Routes>
           <Route path="/" element={<Home />}></Route>
         </Routes>
