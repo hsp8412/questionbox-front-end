@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "./button";
+import axios, { AxiosResponse } from "axios";
+import { UserContext } from "../context/userContextProvider";
+
+const logout = async () => {
+  await axios.delete("http://localhost:4000/api/auth/logout", {
+    withCredentials: true,
+  });
+};
 
 const Landing = () => {
+  const { googleLogin } = useContext(UserContext);
   return (
     <div className="container grid md:grid-cols-3 grid-cols-1 md:space-x-12 md:mt-10 mb-5 space-y-0 mb-20 space-y-8 md:space-y-0">
       <div className="flex flex-row justify-center col-span-1">
@@ -16,10 +25,11 @@ const Landing = () => {
           <button
             className="my-5 bg-indigo-600 text-white font-[Poppins] py-2 px-6 rounded hover:bg-indigo-400
     duration-500"
+            onClick={googleLogin}
           >
             Log in
           </button>
-          <a className="hover:underline ml-3" href="/">
+          <a className="hover:underline ml-3" href="/" onClick={logout}>
             Sign up
           </a>
         </div>

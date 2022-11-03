@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "./button";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsMailbox } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
+import { UserContext } from "./context/userContextProvider";
 
 const Navbar = () => {
+  const altImage = "/flower_poinsettia.png";
+  const { isAuth, userInfo } = useContext(UserContext);
+  console.log(userInfo);
   let Links = [
-    { name: "HOME", link: "/" },
-    { name: "MY BOX", link: "/" },
-    { name: "MY QUESTIONS", link: "/" },
+    { boxName: "HOME", link: "/" },
+    { boxName: "MY BOX", link: "/" },
+    { boxName: "MY QUESTIONS", link: "/" },
   ];
   let [open, setOpen] = useState(false);
   return (
@@ -37,16 +41,24 @@ const Navbar = () => {
           }`}
         >
           {Links.map((link) => (
-            <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
+            <li key={link.boxName} className="md:ml-8 text-xl md:my-0 my-7">
               <a
                 href={link.link}
                 className="text-gray-800 hover:text-gray-400 duration-500"
               >
-                {link.name}
+                {link.boxName}
               </a>
             </li>
           ))}
-          <Button>Login</Button>
+          {isAuth ? (
+            <img
+              src={userInfo?.image}
+              alt="Image"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <Button>Login</Button>
+          )}
         </ul>
       </div>
     </div>
