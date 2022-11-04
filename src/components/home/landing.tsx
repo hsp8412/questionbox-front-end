@@ -3,14 +3,14 @@ import Button from "./button";
 import axios, { AxiosResponse } from "axios";
 import { UserContext } from "../context/userContextProvider";
 
-const logout = async () => {
-  await axios.delete("http://localhost:4000/api/auth/logout", {
-    withCredentials: true,
-  });
-};
+// const logout = async () => {
+//   await axios.delete("http://localhost:4000/api/auth/logout", {
+//     withCredentials: true,
+//   });
+// };
 
 const Landing = () => {
-  const { googleLogin } = useContext(UserContext);
+  const { googleLogin, logout } = useContext(UserContext);
   return (
     <div className="container grid md:grid-cols-3 grid-cols-1 md:space-x-12 md:mt-10 mb-5 space-y-0 mb-20 space-y-8 md:space-y-0">
       <div className="flex flex-row justify-center col-span-1">

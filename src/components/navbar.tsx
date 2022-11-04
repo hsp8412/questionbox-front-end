@@ -1,11 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import Button from "./button";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsMailbox } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { UserContext } from "./context/userContextProvider";
 
-const Navbar = () => {
+interface Props {
+  loginModalOpen: boolean;
+  setLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Navbar: React.FC<Props> = ({ loginModalOpen, setLoginModal }) => {
   const altImage = "/flower_poinsettia.png";
   const { isAuth, userInfo } = useContext(UserContext);
   console.log(userInfo);
@@ -52,12 +57,13 @@ const Navbar = () => {
           ))}
           {isAuth ? (
             <img
-              src={userInfo?.image}
+              src={userInfo?.image ? userInfo.image : "/default_avatar.png"}
               alt="Image"
               referrerPolicy="no-referrer"
+              className="w-12 rounded-full md:ml-8"
             />
           ) : (
-            <Button>Login</Button>
+            <Button setLoginModalOpen={setLoginModal}>Login</Button>
           )}
         </ul>
       </div>

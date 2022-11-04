@@ -6,6 +6,7 @@ import {
   localLogin,
   userLogout,
 } from "../../services/authService";
+import { toast } from "react-toastify";
 
 interface Props {
   children: ReactNode;
@@ -24,7 +25,7 @@ interface userContextInterface {
   isAuth: Boolean;
   setIsAuth: Function;
   login: Function;
-  logout: Function;
+  logout: any;
   checkLogin: Function;
   googleLogin: any;
 }
@@ -58,6 +59,10 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
   };
 
   const googleLogin = () => {
+    if (userInfo._id != "") {
+      toast.error("You are already logged in.");
+      return;
+    }
     window.open("http://localhost:4000/api/auth/google", "_self");
   };
 
@@ -66,6 +71,9 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
     if (user) {
       setUserInfo(user);
       setIsAuth(true);
+      return true;
+    } else {
+      toast.error("Login failed.");
     }
   };
 

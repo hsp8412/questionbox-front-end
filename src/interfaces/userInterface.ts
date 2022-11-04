@@ -4,3 +4,10 @@ export interface user {
   _id: string;
   image: string;
 }
+
+export interface newUser {
+  username: string;
+  email: string;
+  image?: File;
+  password: string;
+}
