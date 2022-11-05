@@ -22,12 +22,14 @@ interface UserInfo {
 interface userContextInterface {
   userInfo: UserInfo | null;
   setUserInfo: Function;
-  isAuth: Boolean;
+  isAuth: boolean;
   setIsAuth: Function;
   login: Function;
   logout: any;
   checkLogin: Function;
   googleLogin: any;
+  loginModalOpen: boolean;
+  setLoginModalOpen: any;
 }
 
 export const UserContext = createContext<userContextInterface>({
@@ -39,6 +41,8 @@ export const UserContext = createContext<userContextInterface>({
   setIsAuth: () => {},
   setUserInfo: () => {},
   userInfo: null,
+  loginModalOpen: false,
+  setLoginModalOpen: () => {},
 });
 
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
@@ -49,6 +53,7 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
     username: "",
   });
   const [isAuth, setIsAuth] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
 
   const checkLogin = async () => {
     const user: user | null = await getUserInfo();
@@ -85,7 +90,11 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
       username: "",
     });
     setIsAuth(false);
-    await userLogout();
+    try {
+      await userLogout();
+    } catch (e) {
+      toast.error("Logout failed.");
+    }
   };
 
   const value: userContextInterface = {
@@ -97,6 +106,8 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
     logout,
     checkLogin,
     googleLogin,
+    loginModalOpen,
+    setLoginModalOpen,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

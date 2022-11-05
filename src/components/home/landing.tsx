@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import Button from "./button";
 import axios, { AxiosResponse } from "axios";
 import { UserContext } from "../context/userContextProvider";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // const logout = async () => {
 //   await axios.delete("http://localhost:4000/api/auth/logout", {
@@ -10,7 +12,16 @@ import { UserContext } from "../context/userContextProvider";
 // };
 
 const Landing = () => {
-  const { googleLogin, logout } = useContext(UserContext);
+  const { googleLogin, logout, isAuth } = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const signUpAction = () => {
+    if (isAuth) {
+      toast.error("You are already logged in.");
+    } else {
+      navigate("/register");
+    }
+  };
   return (
     <div className="container grid md:grid-cols-3 grid-cols-1 md:space-x-12 md:mt-10 mb-5 space-y-0 mb-20 space-y-8 md:space-y-0">
       <div className="flex flex-row justify-center col-span-1">
@@ -29,7 +40,7 @@ const Landing = () => {
           >
             Log in
           </button>
-          <a className="hover:underline ml-3" href="/" onClick={logout}>
+          <a className="hover:underline ml-3" onClick={signUpAction}>
             Sign up
           </a>
         </div>

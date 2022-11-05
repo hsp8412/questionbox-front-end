@@ -30,5 +30,10 @@ export async function getUserInfo() {
 }
 
 export async function userLogout() {
-  await http.delete(`${authApiEndpoint}/logout`, { withCredentials: true });
+  try {
+    await http.delete(`${authApiEndpoint}/logout`, { withCredentials: true });
+  } catch (e) {
+    throw e;
+  }
+  window.location.href = "/";
 }

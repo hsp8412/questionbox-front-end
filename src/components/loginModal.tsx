@@ -7,13 +7,9 @@ import * as Yup from "yup";
 import { localLogin } from "../services/authService";
 import { UserContext } from "./context/userContextProvider";
 
-interface Props {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LoginModal: React.FC<Props> = ({ open, setOpen }) => {
-  const { login, googleLogin } = useContext(UserContext);
+const LoginModal: React.FC = () => {
+  const { login, googleLogin, loginModalOpen, setLoginModalOpen } =
+    useContext(UserContext);
   const { handleChange, handleBlur, errors, values, touched, handleSubmit } =
     useFormik({
       initialValues: {
@@ -38,8 +34,8 @@ const LoginModal: React.FC<Props> = ({ open, setOpen }) => {
 
   return (
     <div>
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Transition.Root show={loginModalOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={setLoginModalOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

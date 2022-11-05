@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { createNewUser } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { UserContext } from "../context/userContextProvider";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const RegisterForm = () => {
     "image/gif",
     "image/png",
   ];
+  const { login } = useContext(UserContext);
 
   const {
     handleChange,
@@ -32,15 +35,19 @@ const RegisterForm = () => {
     },
     onSubmit: async ({ username, email, password, image }, { resetForm }) => {
       let res;
-      if (image != null) {
-        res = await createNewUser({ username, email, password, image });
-      } else {
-        res = await createNewUser({ username, email, password });
+      try {
+        if (image != null) {
+          res = await createNewUser({ username, email, password, image });
+        } else {
+          res = await createNewUser({ username, email, password });
+        }
+      } catch (e) {
+        toast.error("Login failed: email already exists.");
+        return;
       }
+      login(email, password);
       resetForm();
-      if (res) {
-        navigate("/");
-      }
+      navigate("/");
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -84,18 +91,18 @@ const RegisterForm = () => {
           <img
             src={URL.createObjectURL(values.image)}
             alt="avatar"
-            className="w-20 rounded-full"
+            className="w-20 h-20 rounded-full object-cover object-center"
           />
         ) : (
           <img
             src="/default_avatar.png"
             alt="avatar"
-            className="w-20 rounded-full"
+            className="w-20 h-20 rounded-full object-cover object-center"
           />
         )}
       </div>
 
-      <form className="w-full max-w-xl">
+      <form className="w-full max-w-xl" onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <label
@@ -160,8 +167,8 @@ const RegisterForm = () => {
                   ? "border-red-600 border-2"
                   : "border border-gray-200"
               }`}
-              id="email"
-              type="email"
+              id="username"
+              type="text"
               placeholder="Enter username"
               name="username"
               onChange={handleChange}

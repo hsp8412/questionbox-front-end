@@ -11,11 +11,10 @@ export async function createNewUser({
   const userApiEndpoint = `${process.env.REACT_APP_URL_BASE}/user`;
   let avatarUrl: string = "";
   if (image) {
-    let imageUploadUrl = process.env.REACT_APP_IMAGE_UPLOAD_URL;
-    imageUploadUrl = imageUploadUrl + "";
+    let imageUploadUrl = `${process.env.REACT_APP_IMAGE_UPLOAD_URL}`;
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", "Workout-day");
+    formData.append("upload_preset", "question_box");
     let res;
     try {
       res = await http.post(imageUploadUrl, formData);
@@ -24,7 +23,7 @@ export async function createNewUser({
       toast.error("Failed to upload the avatar.");
     }
   }
-  if (avatarUrl != "") {
+  if (avatarUrl !== "") {
     const res = await http
       .post(userApiEndpoint, {
         username,
@@ -34,8 +33,7 @@ export async function createNewUser({
       })
       .catch(function (error) {
         if (error.response && error.response.status === 400) {
-          toast.error(error.response.body);
-          return false;
+          throw error;
         }
       });
   } else {
@@ -47,8 +45,7 @@ export async function createNewUser({
       })
       .catch(function (error) {
         if (error.response && error.response.status === 400) {
-          toast.error(error.response.body);
-          return false;
+          throw error;
         }
       });
   }
