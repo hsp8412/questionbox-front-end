@@ -54,6 +54,7 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
   });
   const [isAuth, setIsAuth] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
+  const googleLoginUrl = `${process.env.REACT_APP_URL_BASE}/auth/google`;
 
   const checkLogin = async () => {
     const user: user | null = await getUserInfo();
@@ -68,7 +69,7 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
       toast.error("You are already logged in.");
       return;
     }
-    window.open("http://localhost:4000/api/auth/google", "_self");
+    window.open(googleLoginUrl, "_self");
   };
 
   const login = async (email: string, password: string) => {
