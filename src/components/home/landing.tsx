@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 // };
 
 const Landing = () => {
-  const { googleLogin, logout, isAuth } = useContext(UserContext);
+  const { googleLogin, logout, isAuth, setLoginModalOpen } =
+    useContext(UserContext);
 
   const navigate = useNavigate();
   const signUpAction = () => {
@@ -36,7 +37,7 @@ const Landing = () => {
           <button
             className="my-5 bg-indigo-600 text-white font-[Poppins] py-2 px-6 rounded hover:bg-indigo-400
     duration-500"
-            onClick={googleLogin}
+            onClick={() => setLoginModalOpen(true)}
           >
             Log in
           </button>
